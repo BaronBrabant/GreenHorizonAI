@@ -8,15 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 
 void main() {
-  final apiKey = 'some-api-key-retrieving-function';
-
-  if (apiKey == null) {
-    print("No API key provided");
-    exit(1);
-  }
-
-  final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
-
   runApp(
     MultiProvider(
       providers: [

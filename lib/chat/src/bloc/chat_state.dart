@@ -1,6 +1,6 @@
 part of 'chat_bloc.dart';
 
-enum ChatStatus { initial, loading, success, failure }
+enum ChatStatus { initial, loading, ready, failure }
 
 class ChatState extends Equatable {
   ChatState({
@@ -13,9 +13,11 @@ class ChatState extends Equatable {
 
   ChatState copyWith({
     ChatStatus? chatStatus,
+    List<ChatMessage>? chatMessages,
   }) {
     return ChatState(
       chatStatus: chatStatus ?? this.chatStatus,
+      chatMessages: chatMessages ?? this.chatMessages,
     );
   }
 
