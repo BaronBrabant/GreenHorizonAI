@@ -1,10 +1,22 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'home/home.dart';
 import 'routes/routes.dart';
 import 'package:provider/provider.dart';
+import 'package:google_generative_ai/google_generative_ai.dart';
 
 void main() {
+  final apiKey = 'some-api-key-retrieving-function';
+
+  if (apiKey == null) {
+    print("No API key provided");
+    exit(1);
+  }
+
+  final model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
+
   runApp(
     MultiProvider(
       providers: [
@@ -36,16 +48,5 @@ class MyApp extends StatelessWidget {
         return router!;
       },
     );
-
-    MaterialApp(
-        title: 'Flutter Demo',
-        theme: ThemeData(
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-          useMaterial3: true,
-        ),
-        home: BlocProvider(
-          create: (BuildContext context) => HomeBloc(),
-          child: const HomePage(),
-        ));
   }
 }
