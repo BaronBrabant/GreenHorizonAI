@@ -10,6 +10,7 @@ class ChatPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const ChatTopBar(),
       body: ChatBody(),
     );
   }

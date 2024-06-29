@@ -1,11 +1,8 @@
-import 'dart:io';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'home/home.dart';
 import 'routes/routes.dart';
 import 'package:provider/provider.dart';
-import 'package:google_generative_ai/google_generative_ai.dart';
+import 'package:reward_tracker/shared/shared.dart';
 
 void main() {
   runApp(
@@ -30,10 +27,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp.router(
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
+      theme: ThemeConfig.baseTheme,
       routerConfig: _appRouter.config(),
       builder: (context, router) {
         return router!;
