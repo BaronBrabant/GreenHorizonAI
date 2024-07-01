@@ -15,7 +15,14 @@ class InitChat extends ChatEvent {
 }
 
 class SendPrompt extends ChatEvent {
-  const SendPrompt(this.prompt);
+  const SendPrompt();
+
+  @override
+  List<Object> get props => [];
+}
+
+class UpdatePrompt extends ChatEvent {
+  const UpdatePrompt(this.prompt);
 
   final String prompt;
 
