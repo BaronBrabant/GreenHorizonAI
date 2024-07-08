@@ -22,18 +22,12 @@ class HomeTitle extends StatelessWidget {
       padding: const EdgeInsets.symmetric(vertical: 12.0),
       decoration: const BoxDecoration(
         color: Colors.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black12,
-            blurRadius: 4.0,
-          ),
-        ],
       ),
       child: const Center(
         child: Text(
-          'Home',
+          'Your Issues',
           style: TextStyle(
-            fontSize: 20.0,
+            fontSize: 31.0,
             fontWeight: FontWeight.bold,
           ),
         ),

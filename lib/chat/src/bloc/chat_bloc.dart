@@ -21,14 +21,17 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late TextEditingController textController;
 
   void _onInitChat(InitChat event, Emitter<ChatState> emit) {
+    print("getting init");
     emit(state.copyWith(chatStatus: ChatStatus.loading));
 
     try {
+      print("creating model");
       model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
     } catch (e) {
       //no api key yet so remove this once you do
       //emit(state.copyWith(chatStatus: ChatStatus.failure));
       //return;
+      print("this is the error on init $e");
     }
 
     emit(state.copyWith(chatStatus: ChatStatus.ready, chatMessages: [
@@ -56,6 +59,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             message: response.text ?? 'error generating prompt', isBot: true)
       ]));
     } catch (e) {
+      print("THIS IS THE RETURNED ERROR $e");
       emit(state.copyWith(prompt: '', chatMessages: [
         ...state.chatMessages,
         ChatMessage(

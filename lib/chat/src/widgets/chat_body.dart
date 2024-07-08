@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reward_tracker/chat/chat.dart';
+import 'package:reward_tracker/shared/shared.dart';
 
 class ChatBody extends StatelessWidget {
   ChatBody();
@@ -42,13 +43,19 @@ class _TextBubble extends StatelessWidget {
     return Align(
       alignment: isMe ? Alignment.centerRight : Alignment.centerLeft,
       child: Container(
+        constraints:
+            BoxConstraints(maxWidth: MediaQuery.of(context).size.width * 0.66),
         decoration: BoxDecoration(
-          color: isMe ? Colors.blue : Colors.grey,
+          color: isMe
+              ? ColorConstants.userTextBubbleColor
+              : ColorConstants.geminiTextBubbleColor,
           borderRadius: BorderRadius.circular(8),
         ),
         padding: const EdgeInsets.all(8),
         margin: const EdgeInsets.all(8),
-        child: Text(text),
+        child: Text(text,
+            textAlign: isMe ? TextAlign.right : TextAlign.left,
+            style: TextStyle(color: isMe ? Colors.white : Colors.black)),
       ),
     );
   }

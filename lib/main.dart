@@ -4,10 +4,13 @@ import 'routes/routes.dart';
 import 'package:provider/provider.dart';
 import 'package:reward_tracker/shared/shared.dart';
 import 'chat/chat.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
-void main() {
+void main() async {
   //we need to get the API key here, maybe we can do a api call and save it locally in flutter_secure_storage package
   var fakeApiKey = "123";
+
+  await dotenv.load(fileName: ".env");
 
   runApp(
     MultiProvider(
@@ -16,7 +19,7 @@ void main() {
           create: (_) => HomeBloc(),
         ),
         Provider<ChatBloc>(
-          create: (_) => ChatBloc(fakeApiKey),
+          create: (_) => ChatBloc(dotenv.env['API_KEY'] ?? fakeApiKey),
         ),
         // Add other providers here
       ],

@@ -9,28 +9,20 @@ class BottomNavBarItem extends BottomNavigationBarItem {
   static BottomNavBarItem _createDefault(String uri, String label,
           [activeUri]) =>
       BottomNavBarItem(
-        Column(children: [
-          SvgPicture.asset(uri, height: 24.0),
-          const SizedBox(height: 10.0),
-        ]),
+        SvgPicture.asset(uri, height: 40.0),
         label,
-        activeUri != null
-            ? Column(children: [
-                SvgPicture.asset(activeUri, height: 24.0),
-                const SizedBox(height: 10.0)
-              ])
-            : null,
+        activeUri != null ? SvgPicture.asset(activeUri, height: 40.0) : null,
       );
 
   static final BottomNavBarItem home = _createDefault(
-    'assets/icons/home.svg',
+    'assets/icons/home_unselected.svg',
     'Home',
-    'assets/icons/home_active.svg',
+    'assets/icons/home_selected.svg',
   );
 
   static final BottomNavBarItem chat = _createDefault(
-    'assets/icons/chat.svg',
+    'assets/icons/chat_unselected.svg',
     'Chat',
-    'assets/icons/chat_active.svg',
+    'assets/icons/chat_selected.svg',
   );
 }
