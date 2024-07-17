@@ -5,12 +5,14 @@ import 'package:reward_tracker/chat/chat.dart';
 
 @RoutePage()
 class ChatPage extends StatelessWidget {
-  const ChatPage();
+  const ChatPage({@PathParam('apiKey') required this.apiKey});
+
+  final String apiKey;
 
   @override
   Widget build(BuildContext context) {
     return BlocProvider<ChatBloc>(
-      create: (BuildContext context) => ChatBloc()..add(const InitChat()),
+      create: (BuildContext context) => ChatBloc(apiKey)..add(const InitChat()),
       child: BlocBuilder<ChatBloc, ChatState>(
         builder: (BuildContext context, ChatState state) {
           switch (state.chatStatus) {

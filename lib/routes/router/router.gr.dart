@@ -21,10 +21,7 @@ abstract class _$AppRouter extends RootStackRouter {
           orElse: () => ChatRouteArgs(apiKey: pathParams.getString('apiKey')));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: ChatPage(
-          apiKey: args.apiKey,
-          key: args.key,
-        ),
+        child: ChatPage(apiKey: args.apiKey),
       );
     },
     HomeRoute.name: (routeData) {
@@ -34,9 +31,11 @@ abstract class _$AppRouter extends RootStackRouter {
       );
     },
     WrapperRoute.name: (routeData) {
+      final args = routeData.argsAs<WrapperRouteArgs>(
+          orElse: () => const WrapperRouteArgs());
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: const WrapperPage(),
+        child: WrapperPage(key: args.key),
       );
     },
   };
@@ -47,14 +46,10 @@ abstract class _$AppRouter extends RootStackRouter {
 class ChatRoute extends PageRouteInfo<ChatRouteArgs> {
   ChatRoute({
     required String apiKey,
-    Key? key,
     List<PageRouteInfo>? children,
   }) : super(
           ChatRoute.name,
-          args: ChatRouteArgs(
-            apiKey: apiKey,
-            key: key,
-          ),
+          args: ChatRouteArgs(apiKey: apiKey),
           rawPathParams: {'apiKey': apiKey},
           initialChildren: children,
         );
@@ -65,18 +60,13 @@ class ChatRoute extends PageRouteInfo<ChatRouteArgs> {
 }
 
 class ChatRouteArgs {
-  const ChatRouteArgs({
-    required this.apiKey,
-    this.key,
-  });
+  const ChatRouteArgs({required this.apiKey});
 
   final String apiKey;
 
-  final Key? key;
-
   @override
   String toString() {
-    return 'ChatRouteArgs{apiKey: $apiKey, key: $key}';
+    return 'ChatRouteArgs{apiKey: $apiKey}';
   }
 }
 
@@ -96,14 +86,29 @@ class HomeRoute extends PageRouteInfo<void> {
 
 /// generated route for
 /// [WrapperPage]
-class WrapperRoute extends PageRouteInfo<void> {
-  const WrapperRoute({List<PageRouteInfo>? children})
-      : super(
+class WrapperRoute extends PageRouteInfo<WrapperRouteArgs> {
+  WrapperRoute({
+    Key? key,
+    List<PageRouteInfo>? children,
+  }) : super(
           WrapperRoute.name,
+          args: WrapperRouteArgs(key: key),
           initialChildren: children,
         );
 
   static const String name = 'WrapperRoute';
 
-  static const PageInfo<void> page = PageInfo<void>(name);
+  static const PageInfo<WrapperRouteArgs> page =
+      PageInfo<WrapperRouteArgs>(name);
+}
+
+class WrapperRouteArgs {
+  const WrapperRouteArgs({this.key});
+
+  final Key? key;
+
+  @override
+  String toString() {
+    return 'WrapperRouteArgs{key: $key}';
+  }
 }

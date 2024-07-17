@@ -7,11 +7,11 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 @RoutePage()
 class WrapperPage extends StatelessWidget {
-  const WrapperPage({super.key});
+  WrapperPage({super.key});
 
-  final List<PageRouteInfo<void>> routes = const [
-    HomeRoute(),
-    ChatRoute(),
+  final List<PageRouteInfo<void>> routes = [
+    const HomeRoute(),
+    ChatRoute(apiKey: dotenv.env['API_KEY']!),
   ];
 
   @override
