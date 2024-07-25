@@ -5,11 +5,7 @@ class HomeEvent extends Equatable {
   List<Object?> get props => [];
 }
 
-class AddTime extends HomeEvent {
-  AddTime({required this.value});
-
-  final double value;
-
+class Init extends HomeEvent {
   @override
-  List<Object?> get props => [value];
+  List<Object?> get props => [];
 }

@@ -2,30 +2,29 @@ part of 'home_bloc.dart';
 
 class HomeState extends Equatable {
   const HomeState({
-    this.totalTime = 0,
-    this.weeklyTime = 0,
-    this.dailyTime = 0,
-    this.streak = 0,
+    this.cityArticles = const <Article>[],
+    this.nationalArticles = const <Article>[],
+    this.internationalArticles = const <Article>[],
   });
 
-  final double totalTime;
-  final double weeklyTime;
-  final double dailyTime;
-  final double streak;
+  final List<Article> cityArticles;
+  final List<Article> nationalArticles;
+  final List<Article> internationalArticles;
 
   @override
-  List<Object?> get props => [totalTime, weeklyTime, dailyTime, streak];
+  List<Object?> get props =>
+      [cityArticles, nationalArticles, internationalArticles];
 
   HomeState copyWith({
-    double? totalTime,
-    double? weeklyTime,
-    double? dailyTime,
-    double? streak,
+    List<Article>? cityArticles,
+    List<Article>? nationalArticles,
+    List<Article>? internationalArticles,
   }) {
     return HomeState(
-        totalTime: totalTime ?? this.totalTime,
-        weeklyTime: weeklyTime ?? this.weeklyTime,
-        dailyTime: dailyTime ?? this.dailyTime,
-        streak: streak ?? this.streak);
+      cityArticles: cityArticles ?? this.cityArticles,
+      nationalArticles: nationalArticles ?? this.nationalArticles,
+      internationalArticles:
+          internationalArticles ?? this.internationalArticles,
+    );
   }
 }

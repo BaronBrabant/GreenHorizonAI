@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reward_tracker/home/home.dart';
 import 'package:auto_route/auto_route.dart';
+import 'package:articles_repository/articles_repository.dart' as repo;
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -9,16 +10,19 @@ class Home extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      return const SingleChildScrollView(
+      return SingleChildScrollView(
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            _InterTitle('Global'),
-            _NewsWidgetHorizontalScroll(),
-            _InterTitle('National'),
-            _NewsWidgetHorizontalScroll(),
-            _InterTitle('City'),
-            _NewsWidgetHorizontalScroll(),
+            const _InterTitle('Global'),
+            _NewsWidgetHorizontalScroll(
+              category: 'Global',
+            ),
+            const _InterTitle('National'),
+            _NewsWidgetHorizontalScroll(category: 'National'),
+            const _InterTitle('City'),
+            _NewsWidgetHorizontalScroll(
+                category: 'City', articles: state.cityArticles),
           ],
         ),
       );
@@ -47,16 +51,56 @@ class Home extends StatelessWidget {
 }
 */
 
-class _NewsWidget extends StatelessWidget {
-  const _NewsWidget({
-    required this.imageUrl,
-    required this.title,
-    required this.source,
+class _NewsWidgetHorizontalScroll extends StatelessWidget {
+  _NewsWidgetHorizontalScroll({
+    required this.category,
+    this.articles,
   });
 
-  final String imageUrl;
-  final String title;
-  final String source;
+  final String category;
+  final List<repo.Article>? articles;
+
+  @override
+  Widget build(BuildContext context) {
+    print("THIS IS THE ARTICLES AS THE WIDGET IS BEING BUILT $articles");
+    return Container(
+      height: 226.0,
+      child: ListView.builder(
+        scrollDirection: Axis.horizontal,
+        itemCount: articles != null ? articles!.length : 10,
+        itemBuilder: (context, index) {
+          print(
+              "THIS IS THE ARTICLES AS THE WIDGET IS BEING BUILT ${articles?[index]}");
+          print("IMAGE IS ${articles?[index].imageUrl}");
+          return articles != null
+              ? _NewsWidget(
+                  article: articles![index],
+                )
+              : _NewsWidget(
+                  article: repo.Article(
+                      id: "dummy",
+                      type: category,
+                      title:
+                          "How climate change is hitting Europe: 3 health impacts",
+                      createdAt: DateTime.now(),
+                      uri: "https://www.nature.com/articles/d41586-024-02006-3",
+                      read: false,
+                      body: "Lorem Ipsum",
+                      imageUrl:
+                          "https://media.nature.com/w1248/magazine-assets/d41586-024-02006-3/d41586-024-02006-3_27208596.jpg?as=webp"));
+        },
+      ),
+    );
+    ;
+  }
+}
+
+class _NewsWidget extends StatelessWidget {
+  const _NewsWidget({
+    required this.article,
+  });
+
+  final repo.Article article;
 
   void _showModalBottomSheet(BuildContext context) {
     showModalBottomSheet<void>(
@@ -67,9 +111,10 @@ class _NewsWidget extends StatelessWidget {
           height: MediaQuery.of(context).size.height * 0.85,
           child: SingleChildScrollView(
             child: _ExpandedArticleView(
-              imageUrl: imageUrl,
-              title: title,
-              source: source,
+              imageUrl: article.imageUrl!,
+              title: article.title,
+              source: article.uri,
+              category: article.type,
             ),
           ),
         );
@@ -79,6 +124,22 @@ class _NewsWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var image = Image.network(
+      article.imageUrl!,
+      width: 130.0,
+      height: 130.0,
+      fit: BoxFit.cover,
+      errorBuilder:
+          (BuildContext context, Object exception, StackTrace? stackTrace) {
+        return Image.asset(
+          "assets/images/thumbnail_placeholder.png",
+          fit: BoxFit.cover,
+          width: 130.0,
+          height: 130.0,
+        );
+      },
+    );
+
     return GestureDetector(
         onTap: () {
           _showModalBottomSheet(context);
@@ -92,20 +153,14 @@ class _NewsWidget extends StatelessWidget {
               Stack(
                 children: [
                   ClipRRect(
-                    borderRadius:
-                        const BorderRadius.vertical(top: Radius.circular(16.0)),
-                    child: Image.network(
-                      imageUrl,
-                      fit: BoxFit.cover,
-                      width: 130.0,
-                      height: 130.0,
-                    ),
-                  ),
+                      borderRadius: const BorderRadius.vertical(
+                          top: Radius.circular(16.0)),
+                      child: image),
                 ],
               ),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
                 Text(
-                  title,
+                  article.title,
                   overflow: TextOverflow.ellipsis,
                   maxLines: 3,
                   style: const TextStyle(
@@ -126,11 +181,13 @@ class _ExpandedArticleView extends StatelessWidget {
     required this.imageUrl,
     required this.title,
     required this.source,
+    required this.category,
   });
 
   final String imageUrl;
   final String title;
   final String source;
+  final String category;
 
   @override
   Widget build(BuildContext context) {
@@ -138,10 +195,19 @@ class _ExpandedArticleView extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.start,
       mainAxisSize: MainAxisSize.min,
       children: <Widget>[
+        Container(
+          width: 40,
+          height: 5,
+          margin: const EdgeInsets.symmetric(vertical: 10),
+          decoration: BoxDecoration(
+            color: Colors.grey,
+            borderRadius: BorderRadius.circular(2.5),
+          ),
+        ),
         const SizedBox(height: 20.0), // Spacer
-        const Text(
-          'Global Climate Change',
-          style: TextStyle(
+        Text(
+          '$category Climate Change',
+          style: const TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
           ),
@@ -165,6 +231,21 @@ class _ExpandedArticleView extends StatelessWidget {
         const Padding(
           padding: EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
+            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
             'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
             'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
             'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
@@ -210,36 +291,6 @@ class _ExpandedArticleView extends StatelessWidget {
         ),
         const SizedBox(height: 20.0), // Spacer at the bottom
       ],
-    );
-  }
-}
-
-class _NewsWidgetHorizontalScroll extends StatelessWidget {
-  const _NewsWidgetHorizontalScroll({
-    this.imageUrl,
-    this.title,
-    this.source,
-  });
-
-  final String? imageUrl;
-  final String? title;
-  final String? source;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      height: 226.0,
-      child: ListView.builder(
-        scrollDirection: Axis.horizontal,
-        itemCount: 10,
-        itemBuilder: (context, index) {
-          return const _NewsWidget(
-              imageUrl:
-                  "https://media.nature.com/w1248/magazine-assets/d41586-024-02006-3/d41586-024-02006-3_27208596.jpg?as=webp",
-              title: 'How climate change is hitting Europe: 3 health impacts',
-              source: 'https://www.nature.com/articles/d41586-024-02006-3');
-        },
-      ),
     );
   }
 }
