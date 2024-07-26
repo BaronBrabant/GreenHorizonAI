@@ -16,10 +16,10 @@ class Home extends StatelessWidget {
           children: <Widget>[
             const _InterTitle('Global'),
             _NewsWidgetHorizontalScroll(
-              category: 'Global',
-            ),
+                category: 'Global', articles: state.globalArticles),
             const _InterTitle('National'),
-            _NewsWidgetHorizontalScroll(category: 'National'),
+            _NewsWidgetHorizontalScroll(
+                category: 'National', articles: state.nationalArticles),
             const _InterTitle('City'),
             _NewsWidgetHorizontalScroll(
                 category: 'City', articles: state.cityArticles),
@@ -29,27 +29,6 @@ class Home extends StatelessWidget {
     });
   }
 }
-
-/*
-class Home extends StatelessWidget {
-  const Home();
-
-  @override
-  Widget build(BuildContext context) {
-    return BlocBuilder<HomeBloc, HomeState>(builder: (context, state) {
-      return const Center(
-          child: Column(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: <Widget>[
-          Text(
-            'Welcome to our app',
-          ),
-        ],
-      ));
-    });
-  }
-}
-*/
 
 class _NewsWidgetHorizontalScroll extends StatelessWidget {
   _NewsWidgetHorizontalScroll({
@@ -62,16 +41,12 @@ class _NewsWidgetHorizontalScroll extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    print("THIS IS THE ARTICLES AS THE WIDGET IS BEING BUILT $articles");
     return Container(
       height: 226.0,
       child: ListView.builder(
         scrollDirection: Axis.horizontal,
         itemCount: articles != null ? articles!.length : 10,
         itemBuilder: (context, index) {
-          print(
-              "THIS IS THE ARTICLES AS THE WIDGET IS BEING BUILT ${articles?[index]}");
-          print("IMAGE IS ${articles?[index].imageUrl}");
           return articles != null
               ? _NewsWidget(
                   article: articles![index],
@@ -102,7 +77,7 @@ class _NewsWidget extends StatelessWidget {
 
   final repo.Article article;
 
-  void _showModalBottomSheet(BuildContext context) {
+  void _showModalBottomSheet(BuildContext context, Image image) {
     showModalBottomSheet<void>(
       isScrollControlled: true,
       context: context,
@@ -115,6 +90,8 @@ class _NewsWidget extends StatelessWidget {
               title: article.title,
               source: article.uri,
               category: article.type,
+              body: article.body,
+              image: image,
             ),
           ),
         );
@@ -126,23 +103,19 @@ class _NewsWidget extends StatelessWidget {
   Widget build(BuildContext context) {
     var image = Image.network(
       article.imageUrl!,
-      width: 130.0,
-      height: 130.0,
       fit: BoxFit.cover,
       errorBuilder:
           (BuildContext context, Object exception, StackTrace? stackTrace) {
         return Image.asset(
           "assets/images/thumbnail_placeholder.png",
           fit: BoxFit.cover,
-          width: 130.0,
-          height: 130.0,
         );
       },
     );
 
     return GestureDetector(
         onTap: () {
-          _showModalBottomSheet(context);
+          _showModalBottomSheet(context, image);
         },
         child: Container(
           width: 130.0,
@@ -155,7 +128,8 @@ class _NewsWidget extends StatelessWidget {
                   ClipRRect(
                       borderRadius: const BorderRadius.vertical(
                           top: Radius.circular(16.0)),
-                      child: image),
+                      child:
+                          SizedBox(height: 130.0, width: 130.0, child: image)),
                 ],
               ),
               Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
@@ -181,13 +155,17 @@ class _ExpandedArticleView extends StatelessWidget {
     required this.imageUrl,
     required this.title,
     required this.source,
+    required this.body,
     required this.category,
+    required this.image,
   });
 
   final String imageUrl;
   final String title;
   final String source;
   final String category;
+  final String body;
+  final Image image;
 
   @override
   Widget build(BuildContext context) {
@@ -213,45 +191,28 @@ class _ExpandedArticleView extends StatelessWidget {
           ),
         ),
         const SizedBox(height: 10.0), // Spacer
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.',
+            title,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 16.0),
+            style: const TextStyle(fontSize: 16.0),
           ),
         ),
         const SizedBox(height: 20.0), // Spacer
-        Container(
-          width: 200,
-          height: 100,
-          color: Colors.grey[300], // Placeholder for the image or video
+
+        SizedBox(
+          height: 200.0,
+          width: 200.0,
+          child: image,
         ),
         const SizedBox(height: 20.0), // Spacer
-        const Padding(
-          padding: EdgeInsets.symmetric(horizontal: 16.0),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.'
-            'Consequat velit qui adipisicing sunt do reprehenderit ad laborum tempor ullamco exercitation.',
+            body,
             textAlign: TextAlign.center,
-            style: TextStyle(fontSize: 14.0),
+            style: const TextStyle(fontSize: 14.0),
           ),
         ),
         const SizedBox(height: 20.0), // Spacer
@@ -262,10 +223,10 @@ class _ExpandedArticleView extends StatelessWidget {
             fontWeight: FontWeight.bold,
           ),
         ),
-        const Text(
-          'Source 1\nSource 2\nSource 3',
+        Text(
+          source,
           textAlign: TextAlign.center,
-          style: TextStyle(fontSize: 14.0),
+          style: const TextStyle(fontSize: 14.0),
         ),
         const SizedBox(height: 20.0), // Spacer
         ElevatedButton(
@@ -277,15 +238,15 @@ class _ExpandedArticleView extends StatelessWidget {
             padding:
                 const EdgeInsets.symmetric(horizontal: 40.0, vertical: 10.0),
           ),
-          child: const Text('Read more about it'),
+          child: const Text('Discuss with AI assistant'),
         ),
         const SizedBox(height: 10.0), // Spacer
         TextButton(
           onPressed: () {
-            // Handle ask follow up question action
+            context.read<HomeBloc>().add(OpenUrl(source));
           },
           child: const Text(
-            'Ask follow up question',
+            'Open article in browser',
             style: TextStyle(color: Colors.green),
           ),
         ),

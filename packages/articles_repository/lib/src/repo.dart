@@ -74,7 +74,7 @@ extension on db.Article {
   Article get fromDb {
     return Article(
       id: id,
-      type: type.toString(),
+      type: type.name,
       title: title,
       createdAt: createdAt,
       uri: uri,

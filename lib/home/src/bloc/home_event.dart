@@ -9,3 +9,12 @@ class Init extends HomeEvent {
   @override
   List<Object?> get props => [];
 }
+
+class OpenUrl extends HomeEvent {
+  OpenUrl(this.value);
+
+  final String value;
+
+  @override
+  List<Object?> get props => [value];
+}
