@@ -1,5 +1,9 @@
 # GreenHorizonAI App
 
+**An app to summarize and create action for environmental issues using AI.**
+
+![alt text](https://github.com/BaronBrabant/GreenHorizonAI/blob/main/pictures/home.png?raw=true)
+
 ## Introduction
 **GreenHorizonAI** is designed to provide a personalized feed of regional environmental issues, empowering users with actionable insights to make a difference. Our mission is simple: Connecting folks to local needs, turning data into deeds.
 
