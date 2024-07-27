@@ -3,17 +3,23 @@ import 'package:equatable/equatable.dart';
 import 'package:google_generative_ai/google_generative_ai.dart';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
+import "package:articles_repository/articles_repository.dart" as repo;
 
 part 'chat_event.dart';
 part 'chat_state.dart';
 
 class ChatBloc extends Bloc<ChatEvent, ChatState> {
-  ChatBloc(this.apiKey) : super(ChatState()) {
+  ChatBloc(this.apiKey, {repo.Article? article}) : super(ChatState()) {
     textController = TextEditingController();
 
     on<SendPrompt>(_onSendPrompt);
     on<UpdatePrompt>(_onUpdatePrompt);
     on<InitChat>(_onInitChat);
+    on<AddArticle>(_onAddArticle);
+
+    if (article != null) {
+      add(AddArticle(article));
+    }
   }
 
   final String apiKey;
@@ -21,28 +27,27 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
   late TextEditingController textController;
 
   void _onInitChat(InitChat event, Emitter<ChatState> emit) {
-    print("getting init");
     emit(state.copyWith(chatStatus: ChatStatus.loading));
 
     try {
-      print("creating model");
       model = GenerativeModel(model: 'gemini-1.5-flash', apiKey: apiKey);
     } catch (e) {
-      //no api key yet so remove this once you do
-      //emit(state.copyWith(chatStatus: ChatStatus.failure));
-      //return;
       print("this is the error on init $e");
     }
 
     emit(state.copyWith(chatStatus: ChatStatus.ready, chatMessages: [
-      ChatMessage(
-          message: 'Hello! I am a chatbot. How can I help you?', isBot: true)
+      state.article == null
+          ? ChatMessage(
+              message: 'Hello! I am a chatbot. How can I help you?',
+              isBot: true)
+          : ChatMessage(
+              message:
+                  "Hey there, I see you're curious about this article, what would you like to know? ",
+              isBot: true)
     ]));
   }
 
   void _onSendPrompt(SendPrompt event, Emitter<ChatState> emit) async {
-    print("Prompt on being sent: ${state.prompt}");
-
     emit(state.copyWith(chatMessages: [
       ...state.chatMessages,
       ChatMessage(message: state.prompt, isBot: false)
@@ -50,6 +55,7 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
 
     final content = [Content.text(state.prompt)];
 
+    textController.clear();
     try {
       final GenerateContentResponse response =
           await model.generateContent(content);
@@ -59,7 +65,6 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             message: response.text ?? 'error generating prompt', isBot: true)
       ]));
     } catch (e) {
-      print("THIS IS THE RETURNED ERROR $e");
       emit(state.copyWith(prompt: '', chatMessages: [
         ...state.chatMessages,
         ChatMessage(
@@ -68,11 +73,13 @@ class ChatBloc extends Bloc<ChatEvent, ChatState> {
             isBot: true)
       ]));
     }
-    textController.clear();
   }
 
   void _onUpdatePrompt(UpdatePrompt event, Emitter<ChatState> emit) {
-    print("Prompt on update: ${state.prompt}");
     emit(state.copyWith(prompt: event.prompt));
+  }
+
+  void _onAddArticle(AddArticle event, Emitter<ChatState> emit) async {
+    emit(state.copyWith(article: event.article));
   }
 }

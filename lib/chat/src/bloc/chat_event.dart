@@ -29,3 +29,12 @@ class UpdatePrompt extends ChatEvent {
   @override
   List<Object> get props => [prompt];
 }
+
+class AddArticle extends ChatEvent {
+  const AddArticle(this.article);
+
+  final repo.Article article;
+
+  @override
+  List<Object> get props => [article];
+}

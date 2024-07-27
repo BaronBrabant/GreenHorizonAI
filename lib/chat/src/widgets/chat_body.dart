@@ -18,6 +18,34 @@ class ChatBody extends StatelessWidget {
                 itemCount: state.chatMessages.length,
                 itemBuilder: (context, index) {
                   final message = state.chatMessages[index];
+                  if (state.article != null && index == 0) {
+                    var image = Image.network(
+                      state.article!.imageUrl!,
+                      fit: BoxFit.cover,
+                      errorBuilder: (BuildContext context, Object exception,
+                          StackTrace? stackTrace) {
+                        return Image.asset(
+                          "assets/images/thumbnail_placeholder.png",
+                          fit: BoxFit.cover,
+                        );
+                      },
+                    );
+
+                    return Column(children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: ArticleCard(
+                            article: state.article!,
+                            image: image,
+                            chatView: true),
+                      ),
+                      _TextBubble(
+                        text: message.message,
+                        isMe: !message.isBot,
+                      ),
+                    ]);
+                  }
+
                   return _TextBubble(
                     text: message.message,
                     isMe: !message.isBot,

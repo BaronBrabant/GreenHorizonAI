@@ -3,6 +3,9 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:reward_tracker/home/home.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:articles_repository/articles_repository.dart' as repo;
+import 'package:reward_tracker/shared/shared.dart';
+import 'package:reward_tracker/routes/routes.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -14,15 +17,16 @@ class Home extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: <Widget>[
-            const _InterTitle('Global'),
-            _NewsWidgetHorizontalScroll(
-                category: 'Global', articles: state.globalArticles),
-            const _InterTitle('National'),
-            _NewsWidgetHorizontalScroll(
-                category: 'National', articles: state.nationalArticles),
+            const LocationBar(),
             const _InterTitle('City'),
             _NewsWidgetHorizontalScroll(
                 category: 'City', articles: state.cityArticles),
+            const _InterTitle('National'),
+            _NewsWidgetHorizontalScroll(
+                category: 'National', articles: state.nationalArticles),
+            const _InterTitle('Global'),
+            _NewsWidgetHorizontalScroll(
+                category: 'Global', articles: state.globalArticles),
           ],
         ),
       );
@@ -92,6 +96,7 @@ class _NewsWidget extends StatelessWidget {
               category: article.type,
               body: article.body,
               image: image,
+              article: article,
             ),
           ),
         );
@@ -117,48 +122,19 @@ class _NewsWidget extends StatelessWidget {
         onTap: () {
           _showModalBottomSheet(context, image);
         },
-        child: Container(
-          width: 130.0,
-          margin: const EdgeInsets.all(8.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Stack(
-                children: [
-                  ClipRRect(
-                      borderRadius: const BorderRadius.vertical(
-                          top: Radius.circular(16.0)),
-                      child:
-                          SizedBox(height: 130.0, width: 130.0, child: image)),
-                ],
-              ),
-              Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-                Text(
-                  article.title,
-                  overflow: TextOverflow.ellipsis,
-                  maxLines: 3,
-                  style: const TextStyle(
-                    fontSize: 14.0,
-                  ),
-                ),
-                const Text('View More',
-                    style: TextStyle(fontWeight: FontWeight.bold))
-              ]),
-            ],
-          ),
-        ));
+        child: ArticleCard(article: article, image: image));
   }
 }
 
 class _ExpandedArticleView extends StatelessWidget {
-  const _ExpandedArticleView({
-    required this.imageUrl,
-    required this.title,
-    required this.source,
-    required this.body,
-    required this.category,
-    required this.image,
-  });
+  const _ExpandedArticleView(
+      {required this.imageUrl,
+      required this.title,
+      required this.source,
+      required this.body,
+      required this.category,
+      required this.image,
+      required this.article});
 
   final String imageUrl;
   final String title;
@@ -166,6 +142,14 @@ class _ExpandedArticleView extends StatelessWidget {
   final String category;
   final String body;
   final Image image;
+  final repo.Article article;
+
+  String capitalizeFirstLetter(String input) {
+    if (input.isEmpty) {
+      return input;
+    }
+    return input[0].toUpperCase() + input.substring(1);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -184,7 +168,7 @@ class _ExpandedArticleView extends StatelessWidget {
         ),
         const SizedBox(height: 20.0), // Spacer
         Text(
-          '$category Climate Change',
+          '${capitalizeFirstLetter(category)} Climate Change',
           style: const TextStyle(
             fontSize: 24.0,
             fontWeight: FontWeight.bold,
@@ -195,7 +179,7 @@ class _ExpandedArticleView extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 16.0),
           child: Text(
             title,
-            textAlign: TextAlign.center,
+            textAlign: TextAlign.left,
             style: const TextStyle(fontSize: 16.0),
           ),
         ),
@@ -231,7 +215,10 @@ class _ExpandedArticleView extends StatelessWidget {
         const SizedBox(height: 20.0), // Spacer
         ElevatedButton(
           onPressed: () {
-            // Handle read more action
+            AutoRouter.of(context).push(ChatRoute(
+              apiKey: dotenv.env['API_KEY']!,
+              article: article,
+            ));
           },
           style: ElevatedButton.styleFrom(
             backgroundColor: Colors.green,
@@ -268,6 +255,35 @@ class _InterTitle extends StatelessWidget {
       child: Text(
         title,
         style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+      ),
+    );
+  }
+}
+
+class LocationBar extends StatelessWidget {
+  const LocationBar({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.all(16.0),
+      child: Container(
+        decoration: BoxDecoration(
+          color: Colors.grey[200],
+          borderRadius: BorderRadius.circular(25.0),
+        ),
+        child: const TextField(
+          decoration: InputDecoration(
+            hintText: 'Belgium, Brussels',
+            hintStyle: TextStyle(fontSize: 16.0),
+            prefixIcon: Icon(Icons.location_on, color: Colors.grey),
+            border: InputBorder.none, // Remove the border
+            enabledBorder: InputBorder.none, // Remove the enabled border
+            focusedBorder: InputBorder.none, // Remove the focused border
+            contentPadding:
+                EdgeInsets.symmetric(vertical: 15.0, horizontal: 20.0),
+          ),
+        ),
       ),
     );
   }

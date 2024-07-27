@@ -3,6 +3,7 @@ import 'package:reward_tracker/home/home.dart';
 import 'package:reward_tracker/chat/chat.dart';
 import 'package:reward_tracker/views_wrapper/wrapper.dart';
 import 'package:flutter/material.dart';
+import 'package:articles_repository/articles_repository.dart';
 
 part 'router.gr.dart';
 

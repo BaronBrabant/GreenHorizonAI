@@ -21,7 +21,10 @@ abstract class _$AppRouter extends RootStackRouter {
           orElse: () => ChatRouteArgs(apiKey: pathParams.getString('apiKey')));
       return AutoRoutePage<dynamic>(
         routeData: routeData,
-        child: ChatPage(apiKey: args.apiKey),
+        child: ChatPage(
+          apiKey: args.apiKey,
+          article: args.article,
+        ),
       );
     },
     HomeRoute.name: (routeData) {
@@ -46,10 +49,14 @@ abstract class _$AppRouter extends RootStackRouter {
 class ChatRoute extends PageRouteInfo<ChatRouteArgs> {
   ChatRoute({
     required String apiKey,
+    Article? article,
     List<PageRouteInfo>? children,
   }) : super(
           ChatRoute.name,
-          args: ChatRouteArgs(apiKey: apiKey),
+          args: ChatRouteArgs(
+            apiKey: apiKey,
+            article: article,
+          ),
           rawPathParams: {'apiKey': apiKey},
           initialChildren: children,
         );
@@ -60,13 +67,18 @@ class ChatRoute extends PageRouteInfo<ChatRouteArgs> {
 }
 
 class ChatRouteArgs {
-  const ChatRouteArgs({required this.apiKey});
+  const ChatRouteArgs({
+    required this.apiKey,
+    this.article,
+  });
 
   final String apiKey;
 
+  final Article? article;
+
   @override
   String toString() {
-    return 'ChatRouteArgs{apiKey: $apiKey}';
+    return 'ChatRouteArgs{apiKey: $apiKey, article: $article}';
   }
 }
 
