@@ -2,7 +2,7 @@
 
 **An app to summarize and create action for environmental issues using AI.**
 
-
+Follow the development journey on X: https://x.com/GreenHorizonAi
 
 
 
