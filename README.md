@@ -2,10 +2,19 @@
 
 **An app to summarize and create action for environmental issues using AI.**
 
-![alt text](https://github.com/BaronBrabant/GreenHorizonAI/blob/main/pictures/home.png?raw=true)
+
+
+
+
 
 ## Introduction
 **GreenHorizonAI** is designed to provide a personalized feed of regional environmental issues, empowering users with actionable insights to make a difference. Our mission is simple: Connecting folks to local needs, turning data into deeds.
+
+<div style="display: flex; flex-direction: row;">
+  <img src="https://github.com/BaronBrabant/GreenHorizonAI/blob/main/pictures/home.png?raw=true" alt="alt text 1" width="300" height="200">
+  <img src="https://github.com/BaronBrabant/GreenHorizonAI/blob/main/pictures/chat.png?raw=true" alt="alt text 2" width="300" height="200">
+  <img src="https://github.com/BaronBrabant/GreenHorizonAI/blob/main/pictures/article.png?raw=true" alt="alt text 3" width="300" height="200">
+</div>
 
 ## Team
 GreenHorizonAI is brought to life by a duo of dedicated software engineers:
