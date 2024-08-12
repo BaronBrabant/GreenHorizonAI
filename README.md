@@ -50,6 +50,13 @@ To get started with GreenHorizonAI:
    flutter run
    ```
 
+4. Create a .env file and add
+   ```
+   API_KEY=your_api_key
+   ```
+
+and don't forget not to add the api key in your version control system!
+
 ## Contributing
 We welcome contributions from the community. If you're interested in helping us improve GreenHorizonAI, please fork the repository and submit a pull request, or open an issue to discuss what you would like to change.
 
