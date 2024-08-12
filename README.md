@@ -57,6 +57,8 @@ To get started with GreenHorizonAI:
 
 and don't forget not to add the api key in your version control system!
 
+Notes: The api is being built separately and hasn't been deployed yet.
+
 ## Contributing
 We welcome contributions from the community. If you're interested in helping us improve GreenHorizonAI, please fork the repository and submit a pull request, or open an issue to discuss what you would like to change.
 
