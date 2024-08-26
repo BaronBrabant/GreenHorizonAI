@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'home/home.dart';
 import 'routes/routes.dart';
 import 'package:provider/provider.dart';
-import 'package:reward_tracker/shared/shared.dart';
+import 'package:GreenHorizon/shared/shared.dart';
 import 'chat/chat.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:db/db.dart';

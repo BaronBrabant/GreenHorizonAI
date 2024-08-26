@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reward_tracker/chat/chat.dart';
-import 'package:reward_tracker/shared/shared.dart';
+import 'package:GreenHorizon/chat/chat.dart';
+import 'package:GreenHorizon/shared/shared.dart';
 import 'package:flutter_markdown/flutter_markdown.dart';
 
 class ChatBody extends StatelessWidget {

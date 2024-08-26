@@ -1,4 +1,4 @@
-name: reward_tracker
+name: GreenHorizon
 description: "A new Flutter project."
 
 publish_to: 'none' # Remove this line if you wish to publish to pub.dev
@@ -26,6 +26,8 @@ dependencies:
     path: packages/db
   articles_repository:
     path: packages/articles_repository
+  url_launcher: ^6.3.0
+  flutter_markdown: ^0.7.3
 
 dev_dependencies:
   flutter_test:

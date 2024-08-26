@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:reward_tracker/shared/shared.dart';
+import 'package:GreenHorizon/shared/shared.dart';
 
 class ThemeConfig {
   static ThemeData createTheme({

@@ -1,7 +1,7 @@
 import 'package:auto_route/auto_route.dart';
-import 'package:reward_tracker/home/home.dart';
-import 'package:reward_tracker/chat/chat.dart';
-import 'package:reward_tracker/views_wrapper/wrapper.dart';
+import 'package:GreenHorizon/home/home.dart';
+import 'package:GreenHorizon/chat/chat.dart';
+import 'package:GreenHorizon/views_wrapper/wrapper.dart';
 import 'package:flutter/material.dart';
 import 'package:articles_repository/articles_repository.dart';
 

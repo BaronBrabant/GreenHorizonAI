@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:auto_route/auto_route.dart';
-import 'package:reward_tracker/routes/routes.dart';
-import 'package:reward_tracker/shared/shared.dart';
-import 'package:reward_tracker/views_wrapper/wrapper.dart';
+import 'package:GreenHorizon/routes/routes.dart';
+import 'package:GreenHorizon/shared/shared.dart';
+import 'package:GreenHorizon/views_wrapper/wrapper.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 @RoutePage()

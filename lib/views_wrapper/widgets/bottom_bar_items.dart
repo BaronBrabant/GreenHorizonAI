@@ -1,4 +1,4 @@
-import 'package:reward_tracker/shared/shared.dart';
+import 'package:GreenHorizon/shared/shared.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 

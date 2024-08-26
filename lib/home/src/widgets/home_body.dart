@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:reward_tracker/home/home.dart';
+import 'package:GreenHorizon/home/home.dart';
 import 'package:auto_route/auto_route.dart';
 import 'package:articles_repository/articles_repository.dart' as repo;
-import 'package:reward_tracker/shared/shared.dart';
-import 'package:reward_tracker/routes/routes.dart';
+import 'package:GreenHorizon/shared/shared.dart';
+import 'package:GreenHorizon/routes/routes.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class Home extends StatelessWidget {
